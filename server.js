@@ -13,7 +13,11 @@ if (process.env.NODE_ENV === "production") {
   
 app.use(apiRoutes);
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/sampleApp");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/sampleApp", {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  }
+  );
 
 app.listen(PORT, function() {
     console.log(`🌎  ==> API Server now listening on PORT ${PORT}!`);

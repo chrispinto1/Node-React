@@ -1,59 +1,66 @@
 import logo from './logo.svg';
 import React from 'react'
-
+import 'bootstrap/dist/css/bootstrap.min.css'
+import axios from "axios";
+import SavedUsers from './ShowUsers'
 
 function App() {
+
+  const data = [
+    {
+      img_url: 'hello',
+      name: 'Sample Name',
+      username: 'Sample username',
+      bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+      github_url: '',
+      portfolio_url: '',
+      something: 'not want'
+    },
+  ]
+
+  const handleUserSave = (event) => {
+    const clickedUser = data[event.target.id]
+    
+    const user = {
+      avatar_url: clickedUser.img_url,
+      username: clickedUser.username,
+      name: clickedUser.name,
+      bio: clickedUser.bio,
+      github_url: clickedUser.github_url,
+      portfolio_url: clickedUser.portfolio_url,
+    }
+
+    axios.post("/api/users", user)
+    .then(user => {
+      console.log(user)
+    })
+  }
+
   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-
-    //     <TailwindThemeProvider
-    //       theme={{
-    //         brandColors: {
-    //           primary: 'red',
-    //         },
-    //       }}
-    //     >
-    //       <FillButton brand="primary">Red button</FillButton>
-    //     </TailwindThemeProvider>]
-
-    //     <div className="box-container">
-    //       <div className="box"></div>
-    //       <div className="box"></div>
-    //       <div className="box"></div>
-    //     </div>
-
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-    <section className="App h-screen w-full flex justify-center items-center bg-green-500">
-      <div className="w-full max-w-md bg-gray-800" >
-        <form action="" className=" bg-white shadow-md rounded px-8 py-8 pt-8">
-          <div className="px-4 pb-4">
-            <label htmlFor="email" className="text-sm block font-bold  pb-2">EMAIL ADDRESS</label>
-            <input type="email" name="email" id="" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-blue-300 " placeholder="Johnbull@example.com" />
-          </div>
-          <div className="px-4 pb-4">
-            <label htmlFor="password" className="text-sm block font-bold pb-2">PASSWORD</label>
-            <input type="password" name="email" id="" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline border-blue-300" placeholder="Enter your password" />
-          </div>
-          <div>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">Sign In</button>
-          </div>
-        </form>
+    <div className="jumbotron">
+      <div className="row" style={{display: 'flex',alignItems: 'center', justifyContent: 'space-between'}}>
+        {
+          data.map((data, index) => {
+            return (
+              <div className="col-3" style={{border: '1px solid black',  width: '10px', marginBottom: '10px', marginRight: '1px'}}>
+                <img src={data.img}/>
+                <h1>{data.name}</h1>
+                <p>{data.username}</p>
+                <p>{data.bio}</p>
+                <p>{data.github_url}</p>
+                <p>{data.portfolio_url}</p>
+                <button id={index} onClick={handleUserSave} style={{position: 'absolute', top: 0, right: 0,border: '1px solid brown'}}>Save User</button>
+              </div>
+            )
+          })
+        }
       </div>
-    </section>
+
+      <div>
+        <h1>Saved users</h1>
+        <SavedUsers />
+      </div>
+    </div>
   );
 }
 
